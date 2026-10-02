@@ -1,5 +1,6 @@
 import argparse
 
+import math
 import mlflow
 import numpy as np
 import pandas as pd
@@ -84,6 +85,11 @@ def main():
     weights = compute_class_weight("balanced", classes=np.array([0, 1, 2]), y=train_ds["labels"])
     model = AutoModelForSequenceClassification.from_pretrained(args.model, num_labels=3)
 
+    n_dev = max(1, torch.cuda.device_count())
+    total_steps = math.ceil(len(train_ds) / (args.batch_size * args.grad_accum * n_dev)) * args.epochs
+    warmup_steps = int(0.1 * total_steps)
+
+
     targs = TrainingArguments(
         output_dir=f"outputs/{args.run_name}",
         num_train_epochs=args.epochs,
@@ -91,7 +97,7 @@ def main():
         per_device_eval_batch_size=args.batch_size * 2,
         gradient_accumulation_steps=args.grad_accum,
         learning_rate=args.lr,
-        warmup_ratio=0.1,
+        warmup_steps=warmup_steps,
         weight_decay=0.01,
         fp16=torch.cuda.is_available(),
         eval_strategy="epoch",
