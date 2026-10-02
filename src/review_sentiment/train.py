@@ -29,7 +29,7 @@ def truncate(ids, max_len, strategy, head_frac=0.25):
 
 def encode(df, tok, max_len, strategy):
     raw = tok(df["content"].tolist(), add_special_tokens=False)["input_ids"]
-    ids = [tok.build_inputs_with_special_tokens(truncate(x, max_len, strategy)) for x in raw]
+    ids = [[tok.cls_token_id] + truncate(x, max_len, strategy) + [tok.sep_token_id] for x in raw]
     return Dataset.from_dict({
         "input_ids": ids,
         "attention_mask": [[1] * len(x) for x in ids],
