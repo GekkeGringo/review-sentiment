@@ -1,0 +1,28 @@
+[project]
+name = "review-sentiment"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "GekkeGringo", email = "gekke_gringo@icloud.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "datasets>=5.0.1",
+    "mlflow>=3.16.1",
+    "pandas>=3.0.6",
+    "pyarrow>=25.0.1",
+    "scikit-learn>=1.9.1",
+]
+
+[project.scripts]
+review-sentiment = "review_sentiment:main"
+
+[build-system]
+requires = ["uv_build>=0.12.19,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
