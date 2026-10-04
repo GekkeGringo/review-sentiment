@@ -225,3 +225,5 @@ mlflow.db
 outputs/
 
 outputs/
+
+kaggle_artifacts/
