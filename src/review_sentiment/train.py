@@ -1,5 +1,6 @@
 import argparse
 
+from review_sentiment.text import truncate
 import math
 import mlflow
 import numpy as np
@@ -17,15 +18,6 @@ LABELS = ["Bad", "Neutral", "Good"]
 L2I = {label: i for i, label in enumerate(LABELS)}
 SEED = 42
 
-
-def truncate(ids, max_len, strategy, head_frac=0.25):
-    body = max_len - 2  # место под [CLS] и [SEP]
-    if len(ids) <= body:
-        return ids
-    if strategy == "head":
-        return ids[:body]
-    head = int(body * head_frac)
-    return ids[:head] + ids[-(body - head):]
 
 
 def encode(df, tok, max_len, strategy):
