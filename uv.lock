@@ -3156,12 +3156,15 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "datasets" },
+    { name = "fastapi" },
+    { name = "httpx" },
     { name = "mlflow" },
     { name = "pandas" },
     { name = "pyarrow" },
     { name = "scikit-learn" },
     { name = "torch" },
     { name = "transformers" },
+    { name = "uvicorn" },
 ]
 
 [package.dev-dependencies]
@@ -3172,12 +3175,15 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "datasets", specifier = ">=5.0.1" },
+    { name = "fastapi", specifier = ">=0.142.2" },
+    { name = "httpx", specifier = ">=0.28.1" },
     { name = "mlflow", specifier = ">=3.16.1" },
     { name = "pandas", specifier = ">=3.0.6" },
     { name = "pyarrow", specifier = ">=25.0.1" },
     { name = "scikit-learn", specifier = ">=1.9.1" },
     { name = "torch", specifier = ">=2.14.1" },
     { name = "transformers", specifier = ">=5.18.0" },
+    { name = "uvicorn", specifier = ">=0.54.0" },
 ]
 
 [package.metadata.requires-dev]

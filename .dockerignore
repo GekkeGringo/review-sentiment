@@ -1,0 +1,10 @@
+.venv
+.git
+data
+mlruns
+mlflow.db
+kaggle_artifacts
+outputs
+notebooks
+__pycache__
+*.parquet
