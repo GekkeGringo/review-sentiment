@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 from review_sentiment.db import Store
 
 state = {}
+SHORT_TEXT_WORDS = 50
 
 
 def create_predictor():
@@ -50,10 +51,10 @@ def predict(req: PredictRequest):
     label = max(probs, key=probs.get)
     state["store"].save(req.text, label, probs)
     warning = None
-    if len(req.text.split()) < 20:
+    if len(req.text.split()) < SHORT_TEXT_WORDS:
         warning = (
-            "Короткий текст: модель обучена на развёрнутых рецензиях, "
-            "надёжность ниже."
+            f"Короткий текст (меньше {SHORT_TEXT_WORDS} слов): на проверочной "
+            "выборке качество модели на таких отзывах ниже."
         )
     return PredictResponse(label=label, probabilities=probs, warning=warning)
 

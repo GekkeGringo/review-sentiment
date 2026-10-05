@@ -28,7 +28,7 @@ def test_health(client):
 
 
 def test_predict_long_text(client):
-    r = client.post("/predict", json={"text": "слово " * 30})
+    r = client.post("/predict", json={"text": "слово " * 60})
     assert r.status_code == 200
     body = r.json()
     assert body["label"] == "Good"
