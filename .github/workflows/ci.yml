@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: src
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install test dependencies
+        run: pip install pytest ruff fastapi httpx pandas scikit-learn datasets pyarrow
+      - name: Lint
+        run: ruff check .
+      - name: Tests
+        run: pytest -q
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -t review-sentiment .
+      - name: Smoke test (imports, without downloading the model)
+        run: >
+          docker run --rm review-sentiment
+          python -c "import torch, transformers, fastapi, review_sentiment.api, review_sentiment.predict; print('ok')"
+      - name: Image size
+        run: docker images review-sentiment

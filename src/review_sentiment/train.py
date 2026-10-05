@@ -1,7 +1,6 @@
 import argparse
-
-from review_sentiment.text import truncate
 import math
+
 import mlflow
 import numpy as np
 import pandas as pd
@@ -10,9 +9,15 @@ from datasets import Dataset
 from sklearn.metrics import f1_score
 from sklearn.utils.class_weight import compute_class_weight
 from transformers import (
-    AutoModelForSequenceClassification, AutoTokenizer, DataCollatorWithPadding,
-    Trainer, TrainingArguments, set_seed,
+    AutoModelForSequenceClassification,
+    AutoTokenizer,
+    DataCollatorWithPadding,
+    Trainer,
+    TrainingArguments,
+    set_seed,
 )
+
+from review_sentiment.text import truncate
 
 LABELS = ["Bad", "Neutral", "Good"]
 L2I = {label: i for i, label in enumerate(LABELS)}

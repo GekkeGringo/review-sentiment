@@ -3,14 +3,18 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 
-from review_sentiment.predict import Predictor
-
 state = {}
+
+
+def create_predictor():
+    from review_sentiment.predict import Predictor
+
+    return Predictor()
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    state["predictor"] = Predictor()
+    state["predictor"] = create_predictor()
     yield
     state.clear()
 
