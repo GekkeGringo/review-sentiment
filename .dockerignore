@@ -8,3 +8,5 @@ outputs
 notebooks
 __pycache__
 *.parquet
+reviews.db
+.env

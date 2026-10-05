@@ -16,11 +16,12 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install test dependencies
-        run: pip install pytest ruff fastapi httpx pandas scikit-learn datasets pyarrow
+        run: pip install pytest ruff fastapi httpx pandas scikit-learn datasets pyarrow sqlalchemy
       - name: Lint
         run: ruff check .
       - name: Tests
         run: pytest -q
+        
 
   docker:
     runs-on: ubuntu-latest
@@ -34,3 +35,5 @@ jobs:
           python -c "import torch, transformers, fastapi, review_sentiment.api, review_sentiment.predict; print('ok')"
       - name: Image size
         run: docker images review-sentiment
+      - name: Validate compose file
+        run: docker compose config -q

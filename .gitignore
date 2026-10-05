@@ -227,3 +227,6 @@ outputs/
 outputs/
 
 kaggle_artifacts/
+
+reviews.db
+.env

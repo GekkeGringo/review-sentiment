@@ -1,3 +1,5 @@
 transformers
 fastapi
 uvicorn
+sqlalchemy
+psycopg[binary]

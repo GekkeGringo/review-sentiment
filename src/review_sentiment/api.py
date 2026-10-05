@@ -3,6 +3,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 
+from review_sentiment.db import Store
+
 state = {}
 
 
@@ -12,9 +14,14 @@ def create_predictor():
     return Predictor()
 
 
+def create_store():
+    return Store()
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     state["predictor"] = create_predictor()
+    state["store"] = create_store()
     yield
     state.clear()
 
@@ -41,7 +48,21 @@ def health():
 def predict(req: PredictRequest):
     probs = state["predictor"].predict(req.text)
     label = max(probs, key=probs.get)
+    state["store"].save(req.text, label, probs)
     warning = None
     if len(req.text.split()) < 20:
-        warning = "Короткий текст: модель обучена на развёрнутых рецензиях, надёжность ниже."
+        warning = (
+            "Короткий текст: модель обучена на развёрнутых рецензиях, "
+            "надёжность ниже."
+        )
     return PredictResponse(label=label, probabilities=probs, warning=warning)
+
+
+@app.get("/stats/daily")
+def stats_daily():
+    return state["store"].daily_negative_share()
+
+
+@app.get("/stats/negative")
+def stats_negative(days: int = 7, limit: int = 10):
+    return state["store"].most_negative(days=days, limit=limit)
