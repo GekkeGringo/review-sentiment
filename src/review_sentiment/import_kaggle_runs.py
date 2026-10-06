@@ -24,7 +24,7 @@ existing = {
 
 for r in runs:
     name = r.data.tags.get("mlflow.runName", r.info.run_id[:8])
-    if name in SKIP or name in existing:
+    if name in SKIP or name in existing or "smoke" in name:
         continue
     with mlflow.start_run(run_name=name):
         mlflow.log_params(r.data.params)
