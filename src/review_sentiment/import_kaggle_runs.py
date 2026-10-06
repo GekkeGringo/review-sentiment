@@ -1,3 +1,4 @@
+import os
 import sys
 
 import mlflow
@@ -9,8 +10,12 @@ DST = "sqlite:///mlflow.db"
 EXPERIMENT = "kinopoisk-sentiment"
 SKIP = {"smoke-test"}
 
+if not os.path.exists(SRC_FILE):
+    sys.exit(f"Файл не найден: {SRC_FILE}")
 src = MlflowClient(tracking_uri=SRC)
 exp = src.get_experiment_by_name(EXPERIMENT)
+if exp is None:
+    sys.exit(f"В {SRC_FILE} нет эксперимента {EXPERIMENT}")
 runs = src.search_runs([exp.experiment_id])
 
 mlflow.set_tracking_uri(DST)
