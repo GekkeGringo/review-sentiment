@@ -3,7 +3,7 @@ FROM python:3.11-slim
 ENV PYTHONUNBUFFERED=1 PYTHONPATH=/app/src PIP_NO_CACHE_DIR=1
 WORKDIR /app
 
-RUN pip install torch --index-url https://download.pytorch.org/whl/cpu
+RUN pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
 COPY requirements-serve.txt .
 RUN pip install -r requirements-serve.txt
 COPY src ./src
