@@ -31,10 +31,10 @@ def bootstrap(y, preds, n=1000):
     for _ in range(n):
         idx = rng.integers(0, len(y), len(y))
         scores = {k: macro(y[idx], v[idx]) for k, v in preds.items()}
-        for k in boot:
-            boot[k].append(scores[k])
-        for k in diffs:
-            diffs[k].append(scores["llm"] - scores[k])
+        for k, bucket in boot.items():
+            bucket.append(scores[k])
+        for k, bucket in diffs.items():
+            bucket.append(scores["llm"] - scores[k])
     return boot, diffs
 
 
